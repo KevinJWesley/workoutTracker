@@ -5,7 +5,7 @@ const logger = require("morgan");
 const PORT = process.env.PORT || 3000;
 
 //require models
-// const  = require("");
+const db = require("./models");
 
 const app = express();
 
@@ -17,9 +17,11 @@ app.use(express.json());
 app.use(express.static("public"));
 
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/custommethods",
+  process.env.MONGODB_URI || "mongodb://localhost/workout",
   { useNewUrlParser: true }
 );
+
+// create/seed? database for WOrkout
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
