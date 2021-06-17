@@ -29,8 +29,7 @@ app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/stats.html"));
 });
 
-
-// create/seed? database for WOrkout
+//POST create?/seed? database for WOrkout
 app.post("/api/workouts", (req, res) => {
   db.Workout.create({})
     .then((dbWorkout) => {
@@ -41,7 +40,7 @@ app.post("/api/workouts", (req, res) => {
     });
 });
 
-//create get routes for /exercise, and  /stats
+//create get routes for /exercise,
 app.get("/api/workouts", (req, res) => {
   db.Workout.aggregate([
     {
@@ -70,6 +69,27 @@ app.put("/api/workouts/:id", (req, res) => {
   })
     .then((newWorkout) => {
       res.json(newWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+//post route for STATS!!!
+
+app.get("/api/workouts", (req, res) => {
+  db.Workout.aggregate([
+    {
+      $addFields: {
+        totalDuration: {
+          $sum: "$exercises.duration",
+        },
+      },
+    },
+  ])
+    .then((dbExercise) => {
+      console.log(dbExercise);
+      res.json(dbExercise);
     })
     .catch((err) => {
       res.json(err);
